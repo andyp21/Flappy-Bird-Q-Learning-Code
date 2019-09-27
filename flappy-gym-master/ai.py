@@ -7,7 +7,7 @@ env = gym.make('flappygym-v0')
 env.reset()
 
 
-LEARNING_RATE = 0.99
+LEARNING_RATE = 0.1
 DISCOUNT = 0.95
 EPISODES = 2500
 actions = 2
@@ -21,25 +21,21 @@ for i in range(EPISODES):
     done = False
     while not done:
         x, y = state
-        x = int(x)
-        y = int(y)
-        action = np.argmax(q_table[x][y])
-        action = int(action)
+        action = np.argmax(q_table[int(x)][int(y)])
         new_state, reward, done, _ = env.step(action)
-        if i % 100 == 0:
-            env.render()
+        env.render()
 
         # if simulation didn't end after the previous step, update q-table
         if not done:
             x_new, y_new = new_state
             max_future_q = np.max(q_table[int(x_new)][int(y_new)])
 
-            current_q = q_table[x][y][action]   # current q-value
-
-            # new q-value using the Q-formula
-            new_q = (1 - LEARNING_RATE) * current_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q)
-
-            q_table[x][y][action] = new_q   # updates q-table with newly generated q-value
+            current_q = q_table[state + (action,)]   # current q-value
+            #
+            # # new q-value using the Q-formula
+            # new_q = (1 - LEARNING_RATE) * current_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q)
+            #
+            # q_table[state + (action,)] = new_q   # updates q-table with newly generated q-value
 
         # Simulation ended (for any reason) - if goal position is achieved - update Q value with reward directly
         # elif new_state[0] >= env.goal_position:
