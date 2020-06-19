@@ -5,4 +5,4 @@ PreReqs pip install pygame
 
 Project success TBD.
 
-Authors Andrew Paul Khemet Robinson Dylan Snyder
+Authors: Andrew Paul, Khemet Robinson, Dylan Snyder
